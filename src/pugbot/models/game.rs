@@ -67,11 +67,9 @@ impl Game {
     }
   }
 
-  pub fn next_team_to_draft(&mut self) -> Team {
+  pub fn next_team_to_draft(&mut self) -> Option<Team> {
     let next_team = self.turn_taker.next().unwrap();
-    {
-      self.team_by_id(next_team).unwrap()
-    }
+    self.team_by_id(next_team)
   }
 
   pub fn team_by_id(&self, id: usize) -> Option<Team> {
@@ -103,7 +101,8 @@ impl Game {
         } else {
           None
         }
-      }).filter(|t| t.is_some())
+      })
+      .filter(|t| t.is_some())
       .map(|t| t.unwrap())
       .collect();
 
@@ -127,7 +126,8 @@ impl Game {
         let member_names: Vec<String> =
           team.members.iter().map(|user| user.clone().name).collect();
         format!("Team {} roster:\n{}", team.id, member_names.join("\n"))
-      }).collect();
+      })
+      .collect();
 
     if self.phase == Some(Phases::PlayerDrafting) {
       self.next_phase();
@@ -209,7 +209,10 @@ impl Phased for Game {
         self.draft_pool.members = Vec::new();
         Some(Phases::CaptainSelection)
       }
-      Some(Phases::CaptainSelection) => Some(Phases::PlayerDrafting),
+      Some(Phases::CaptainSelection) => {
+        self.select_captains();
+        Some(Phases::PlayerDrafting)
+      }
       Some(Phases::PlayerDrafting) => {
         self.turn_number = 1;
         self.turn_taker = team_id_range().cycle();

@@ -24,7 +24,10 @@ pub fn pick_user(
   }
 
   let user = game.draft_pool.pop_available_player(&user_index).unwrap();
-  game.next_team_to_draft().add_member(user);
+
+  if let Some(mut next_team) = game.next_team_to_draft() {
+    next_team.add_member(user);
+  }
 
   let max_turns: u32 = queue_size() - team_count().unwrap();
 
@@ -104,9 +107,8 @@ mod tests {
     game.next_phase();
     game.select_captains();
     assert_eq!(game.phase, Some(Phases::PlayerDrafting));
-    if let Some(ref teams) = game.teams {
-      assert_eq!(teams.len(), 2);
-      if let Some(ref first_captain) = teams[0].captain {}
+    if let Some(ref next_team) = game.next_team_to_draft() {
+      assert_eq!(next_team.members.len(), 0);
     }
   }
 }
