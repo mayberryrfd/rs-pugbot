@@ -4,7 +4,7 @@ use crate::models::team::Team;
 use crate::team_id_range;
 use crate::traits::has_members::HasMembers;
 use crate::traits::phased::Phased;
-use rand::{thread_rng, Rng};
+use rand::thread_rng;
 use serenity::model::channel::Embed;
 use serenity::model::id::UserId;
 use serenity::utils::Colour;

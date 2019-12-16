@@ -2,13 +2,18 @@ use crate::commands::error_embed;
 use crate::consume_message;
 use crate::models::game::{Game, Phases};
 use crate::traits::phased::Phased;
+use serenity::client::Context;
+use serenity::framework::standard::macros::command;
+use serenity::framework::standard::Args;
+use serenity::framework::standard::CommandResult;
 use serenity::model::channel::Message;
 
-command!(mapvote(ctx, msg, args) {
+#[command]
+pub fn mapvote(ctx: &mut Context, msg: &Message, args: Args) -> CommandResult {
   let mut data = ctx.data.lock();
   let game = data.get_mut::<Game>().unwrap();
   map_vote(game, msg, true, args.single::<usize>()? as i32)?;
-});
+}
 
 #[allow(unused_must_use)]
 pub fn map_vote(

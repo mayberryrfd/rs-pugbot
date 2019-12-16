@@ -16,7 +16,7 @@ test = false
 
 [dependencies]
 bigdecimal = "*"
-diesel = { version = "^1.4", features = ["chrono", "postgres", "serde_json", "huge-tables", "numeric", "uuid"] }
+diesel = { version = "^1.4", features = ["chrono", "postgres", "serde_json", "64-column-tables", "numeric", "uuid"] }
 # diesel_cli must be installed via the following command:
 # cargo install diesel_cli --no-default-features --features postgres
 diesel_migrations = "^1.4"
@@ -28,7 +28,7 @@ num = "*"
 r2d2 = "*"
 r2d2-diesel = "*"
 rand = "*"
-serde = { version = "^1.0", features=["derive"] }
+serde = { version = "^1.0", features = ["derive"] }
 serde_json = "^1.0"
 serenity = "^0.7"
 typemap = "0.3"

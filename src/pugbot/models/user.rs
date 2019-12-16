@@ -5,10 +5,13 @@ use diesel::pg::Pg;
 use diesel::prelude::{Insertable, Queryable};
 use diesel::ExpressionMethods;
 use serenity::model::id::UserId;
-use serenity::model::user::User;
+use serenity::model::user::User as SerenityUser;
 
-#[derive(Debug)]
+#[derive(Identifiable, PartialEq, Debug)]
+#[primary_key(user_id)]
+#[table_name = "users"]
 pub struct DiscordUser {
+  pub user_id: i32,
   pub database_id: Option<i32>,
   pub discord_user_id: UserId,
   pub bot: bool,
@@ -17,7 +20,7 @@ pub struct DiscordUser {
   pub avatar: Option<String>,
 }
 
-impl<'a> Insertable<users::table> for &'a User {
+impl<'a> Insertable<users::table> for &'a SerenityUser {
   type Values = <(
     Eq<users::bot, bool>,
     Eq<users::discriminator, i32>,
@@ -36,9 +39,9 @@ impl<'a> Insertable<users::table> for &'a User {
   }
 }
 
-impl From<DiscordUser> for User {
-  fn from(discord_user: DiscordUser) -> User {
-    User {
+impl From<DiscordUser> for SerenityUser {
+  fn from(discord_user: DiscordUser) -> SerenityUser {
+    SerenityUser {
       id: discord_user.discord_user_id,
       bot: discord_user.bot,
       discriminator: discord_user.discriminator,

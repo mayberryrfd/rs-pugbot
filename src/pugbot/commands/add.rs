@@ -1,3 +1,6 @@
+use serenity::client::Context;
+use serenity::framework::standard::macros::command;
+use serenity::framework::standard::CommandResult;
 use serenity::model::channel::Message;
 use serenity::model::user::User;
 
@@ -7,11 +10,12 @@ use crate::traits::has_members::HasMembers;
 use crate::traits::phased::Phased;
 use crate::traits::pool_availability::PoolAvailability;
 
-command!(add(ctx, msg) {
+#[command]
+pub fn add(ctx: &mut Context, msg: &Message) -> CommandResult {
   let mut data = ctx.data.lock();
   let game = data.get_mut::<Game>().unwrap();
   update_members(game, msg, true);
-});
+}
 
 pub fn update_members(
   game: &mut Game,

@@ -1,13 +1,10 @@
-#![feature(const_fn, custom_attribute, plugin)]
+#![feature(const_fn, plugin)]
 #![allow(unused_attributes)]
 #[macro_use]
 extern crate log;
-#[macro_use]
 extern crate serenity;
 #[macro_use]
 extern crate diesel;
-#[macro_use]
-extern crate serde_derive;
 
 use env_logger;
 use kankyo;

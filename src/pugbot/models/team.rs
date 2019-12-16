@@ -5,6 +5,7 @@ use serenity::model::user::User;
 use serenity::utils::Colour;
 use std::clone::Clone;
 use typemap::Key;
+use serde::Serialize;
 
 #[derive(Debug, Clone, Serialize)]
 pub struct Team {
